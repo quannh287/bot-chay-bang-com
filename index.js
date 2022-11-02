@@ -1,8 +1,19 @@
-// install express with `npm install express` 
+// install express with `npm install express`
 const express = require('express')
-const app = express()
+const axios = require('axios')
+const { App } = require('deta')
+const { gemBotMySelfUrl, gemBotReportDailyUrl, dailyReportMessage } = require('./src/Constant')
 
-app.get('/', (req, res) => res.send('Hello World!'))
+const app = App(express())
+
+app.get('/', (req, res) => res.send('Welcome to bot-chay-bang-com GEM!'))
+
+app.lib.cron((event) => {
+  console.log('[event]', event)
+  axios.post(gemBotReportDailyUrl, {
+    text: dailyReportMessage,
+  })
+})
 
 // export 'app'
 module.exports = app
